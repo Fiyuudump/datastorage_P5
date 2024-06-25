@@ -19,8 +19,10 @@ public class DatabaseStorage implements DataStorage {
     private Connection connection;
     public DatabaseStorage(String databasePath) {
         try {
+            Class.forName("org.sqlite.JDBC");
+            
             connection = DriverManager.getConnection(String.format("jdbc:sqlite:%s" , databasePath));
-        } catch (SQLException e) {
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace(System.err);
         }
     }

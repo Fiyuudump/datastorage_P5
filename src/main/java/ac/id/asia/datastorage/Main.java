@@ -23,7 +23,7 @@ public class Main {
         System.out.println("File storage: " + fileStorage.readData());
         
         // Contoh penggunaan DatabaseStorage
-        DataStorage databaseStorage = new DatabaseStorage("db_data/database.db");
+        DataStorage databaseStorage = new DatabaseStorage("db_data/database");
         databaseStorage.writeData("Data stored in database");
         System.out.println("Database storage: " + databaseStorage.readData());
         
