@@ -17,13 +17,22 @@ import java.sql.Statement;
  */
 public class DatabaseStorage implements DataStorage {
     private Connection connection;
-    public DatabaseStorage(String databasePath) {
+        public DatabaseStorage(String databasePath) {
         try {
             Class.forName("org.sqlite.JDBC");
             
             connection = DriverManager.getConnection(String.format("jdbc:sqlite:%s" , databasePath));
+            
+            initCreateTable();
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace(System.err);
+        }
+    }
+    
+    // ini private methode (internal methode tambahan di dalam kelas DatabaseStorage
+    private void initCreateTable() throws SQLException {
+        try (Statement statement = connection.createStatement()) {
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS data (value TEXT)");
         }
     }
     
@@ -33,8 +42,6 @@ public class DatabaseStorage implements DataStorage {
 
             statement.setQueryTimeout(30);  // set timeout to 30 sec.
 
-            statement.executeUpdate("DROP TABLE IF EXISTS data");
-            statement.executeUpdate("CREATE TABLE data (value TEXT)");
             statement.executeUpdate(String.format("INSERT INTO data (value) VALUES ('%s')", data));
         } catch (SQLException e) {
             e.printStackTrace(System.err);
